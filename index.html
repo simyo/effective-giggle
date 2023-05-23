@@ -27,8 +27,12 @@
 
 	<!-- JS
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <script defer src="build.js"></script>
-  <script defer src="main.js"></script>
+	<script defer src="build.js" id="build.js"></script>
+	<script defer src="main.js" id="main.js"></script>
+	<script defer type="text/javascript">
+		document.getElementById('main.js').src = 'main.js?v=' + Date.now();
+		document.getElementById('build.js').src = 'build.js?v=' + Date.now();
+	</script>
 
 </head>
 
@@ -46,7 +50,8 @@
 			<div id="img-container" class="twelve columns" style="width: 100%; height: 20vh">
 			</div>
 			<div class="twelve columns" style="height: 60vh">
-				<textarea id="text" style="resize: none; width: 100%; height: 100%; white-space: pre; overflow-wrap: normal; overflow-x: scroll"></textarea>
+				<textarea id="text"
+					style="resize: none; width: 100%; height: 100%; white-space: pre; overflow-wrap: normal; overflow-x: scroll"></textarea>
 			</div>
 		</div>
 	</div>
