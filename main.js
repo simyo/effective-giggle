@@ -76,10 +76,11 @@ const fn = async () => {
             log('requested:')
             const consts = {
                 audio: false,
-                video: true,
-                width: { exact: width },
-                height: { exact: height },
-                deviceId: { exact: deviceId },
+                video: {
+                    width: { exact: width },
+                    height: { exact: height },
+                    deviceId: { exact: deviceId },
+                }
             }
             log(JSON.stringify(consts))
             return navigator.mediaDevices.getUserMedia(consts)
