@@ -47,7 +47,9 @@ const fn = async () => {
 
         await navigator.mediaDevices.getUserMedia({
             audio: false,
-            video: true
+            video: {
+                facingMode: { exact: "environment" }
+            }
         }).then(stream => {
             const tracks = stream.getTracks()
             log(`environment stream: (${tracks.length} tracks) ${tracks[0].getSettings().deviceId}, ${tracks[0].label}`)
