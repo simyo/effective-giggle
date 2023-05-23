@@ -9,7 +9,11 @@ const fn = async () => {
     }
 
     const text = document.querySelector('#text')
-    const log = txt => text.value += txt + '\n'
+    const log = txt => {
+        console.log(txt)
+        text.value += txt + '\n'
+        text.scrollTop = text.scrollHeight;
+    }
     log(`buildtime: ${window.buildtime}`)
     try {
         await navigator.mediaDevices.getUserMedia({ video: true })
@@ -54,6 +58,42 @@ const fn = async () => {
             const tracks = stream.getTracks()
             log(`environment stream: (${tracks.length} tracks) ${tracks[0].getSettings().deviceId}, ${tracks[0].label}`)
             tracks.forEach(track => track.stop())
+        }, log)
+
+        log('probe end')
+        navigator.mediaDevices.getUserMedia({
+            audio: false,
+            video: true
+        }).then(stream => {
+            const track = stream.getTracks()[0]
+            const {
+                width: { max: width },
+                height: { max: height }
+            } = track.getCapabilities()
+            track.stop()
+            return { width, height, deviceId: track.getSettings().deviceId }
+        }).then(({ width, height, deviceId }) => {
+            log('requested:')
+            const consts = {
+                audio: false,
+                video: true,
+                width: { exact: width },
+                height: { exact: height },
+                deviceId: { exact: deviceId },
+            }
+            log(JSON.stringify(consts))
+            return navigator.mediaDevices.getUserMedia(consts)
+        }).then(stream => {
+            const tracks = stream.getTracks()
+            const track = tracks[0]
+            const { width, height, deviceId } = track.getSettings()
+            log('gotten: ' + JSON.stringify({ width, height, deviceId }))
+            const video = document.querySelector('video#feed');
+            video.srcObject = stream
+            video.onloadedmetadata = function (e) {
+                log('video.onloadedmetadata')
+            };
+            window.stuff = { stream, tracks, track, video }
         })
     } catch (e) {
         log('ERR: ' + e)
@@ -66,5 +106,6 @@ const fn = async () => {
     Object.entries(consts).forEach(en => {
         log(('-- ' + en[0]).padEnd(len) + ' : ' + JSON.stringify(en[1]))
     })
+    log('all done')
 }
 fn()
