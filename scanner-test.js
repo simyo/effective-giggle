@@ -83,8 +83,8 @@ const Scheduler = () => {
     handle = setInterval(() => {
       const width = (marker.offsetLeft + marker.offsetWidth) * 2
       const height = (marker.offsetTop + marker.offsetHeight) * 2
-      const randomMultX = (Math.random() * .2) + .9
-      const randomMultY = (Math.random() * .2) + .9
+      const randomMultX = (Math.random() * .05) + .975
+      const randomMultY = (Math.random() * .05) + .975
       const cutWidth = Math.min(video.clientWidth, randomMultX * width)
       const cutHeight = Math.min(video.clientHeight, randomMultY * height)
       const canvas = window.canvas = scanner.generateCanvasFromVideo({
@@ -93,7 +93,7 @@ const Scheduler = () => {
         cutWidth,
         cutHeight,
       })
-      //img.src = canvas.toDataURL()
+      img.src = canvas.toDataURL()
       try {
         const result = log(JSON.stringify(reader.decodeFromCanvas(canvas)))
       } catch (e) {
