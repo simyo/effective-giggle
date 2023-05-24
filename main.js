@@ -91,7 +91,7 @@ const fn = async () => {
                 video: {
                     width: { ideal: width, max: 1024 },
                     height: { ideal: height, max: 1024 },
-                    frameRate: { ideal: 5 },
+                    frameRate: { ideal: 10 },
                     deviceId: { exact: deviceId },
                 }
             }
@@ -122,6 +122,7 @@ const fn = async () => {
     })
     log('all done')
 }
+
 fn()
 document.querySelector('button').addEventListener('click', () => {
     const generateImageWithCanvas = (track, videoElem, cutWidth, cutHeight) => {

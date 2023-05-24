@@ -3,69 +3,77 @@
 
 <head>
 
-	<!-- Basic Page Needs
+  <!-- Basic Page Needs
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-	<meta charset="utf-8">
+  <meta charset="utf-8">
 
-	<!-- Mobile Specific Metas
+  <!-- Mobile Specific Metas
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<!-- FONT
+  <!-- FONT
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-	<link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
 
-	<!-- Favicon
+  <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-	<link rel="icon" type="image/png" href="img/favicon.png">
+  <link rel="icon" type="image/png" href="img/favicon.png">
 
-	<!-- CSS
+  <!-- CSS
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-	<link rel="stylesheet" href="normalize.css">
-	<link rel="stylesheet" href="skeleton.css">
-	<link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="normalize.css">
+  <link rel="stylesheet" href="skeleton.css">
+  <link rel="stylesheet" href="style.css">
 
-	<!-- JS
+  <!-- JS
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-	<script defer src="build.js" id="build.js"></script>
-	<script defer type="module" src="main.js" id="main.js"></script>
-	<script defer type="module" src="greeter.js"></script>
-	<script defer type="module" src="test.js"></script>
-	<script defer type="text/javascript">
-		document.getElementById('build.js').src = 'build.js?v=' + Date.now();
-		document.getElementById('main.js').src = 'main.js?v=' + Date.now();
-	</script>
+  <script type="importmap">
+    { "imports": {
+        "webrtc-adapter":  "https://webrtc.github.io/adapter/adapter-latest.js"
+    } }
+  </script>
+  <script defer src="build.js" id="build.js"></script>
+  <script defer type="module" src="scanner.js"></script>
+  <script async type="module" src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+  <script async type="module" src="https://unpkg.com/@zxing/library@0.20.0/umd/index.min.js"></script>
+  <script async type="module" src="https://unpkg.com/@zxing/browser@0.1.3"></script>
+  <script defer type="module" src="scanner-test.js"></script>
+  <script defer type="module" src="greeter.js"></script>
+  <script defer type="module" src="test.js"></script>
+  <script defer type="text/javascript">
+    document.getElementById('build.js').src = 'build.js?v=' + Date.now();
+  </script>
 
 </head>
 
 <body style="min-height: 100vh">
 
-	<!-- Primary Page Layout
+  <!-- Primary Page Layout
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-	<div class="container">
-		<div class="row">
-			<div class="twelve columns" style="margin-top: 5vh">
-				<h4 id="headline">Variante 8</h4>
-				<button style="display: block;" id="btn">Scan</button>
-				<div style="display: none;" id="invisible"></div>
-			</div>
-		</div>
-		<div class="row" style="display: flex; justify-content: center;">
-			<div class="videobox" class="twelve columns"
-				style="height: 30vh; max-width:100%; display: flex; justify-content: center; display: inline-block; position:relative;">
-				<div class="overlay" style="z-index:10">
-					<div class="overlay-element top-left" style="z-index:10"></div>
-					<div class="overlay-element top-right" style="z-index:-10"></div>
-					<div class="overlay-element bottom-left"></div>
-					<div class="overlay-element bottom-right"></div>
-				</div>
-				<video autoplay muted playsinline style="height:100%; flex-shrink: 0;">
-			</div>
-		</div>
-		<div class="row" style="display: flex; justify-content: center;">
-			<div class="videobox" class="twelve columns"
-				style="height: 30vh; max-width:100%; display: flex; justify-content: center; display: inline-block; position:relative;">
-				<!--<div class="overlay">
+  <div class="container">
+    <div class="row">
+      <div class="twelve columns" style="margin-top: 5vh">
+        <h4 id="headline">Variante 8</h4>
+        <button style="display: block;" id="btn">Scan</button>
+        <div style="display: none;" id="invisible"></div>
+      </div>
+    </div>
+    <div class="row" style="display: flex; justify-content: center;">
+      <div class="videobox" class="twelve columns"
+        style="height: 30vh; max-width:100%; display: flex; justify-content: center; display: inline-block; position:relative;">
+        <div class="overlay" style="z-index:10">
+          <div class="overlay-element top-left" style="z-index:10"></div>
+          <div class="overlay-element top-right" style="z-index:-10"></div>
+          <div class="overlay-element bottom-left"></div>
+          <div class="overlay-element bottom-right"></div>
+        </div>
+        <video autoplay muted playsinline style="height:100%; flex-shrink: 0;">
+      </div>
+    </div>
+    <div class="row" style="display: flex; justify-content: center;">
+      <div class="videobox" class="twelve columns"
+        style="height: 30vh; max-width:100%; display: flex; justify-content: center; display: inline-block; position:relative;">
+        <!--<div class="overlay">
 					<div class="overlay-helper">
 						<div class="overlay-element top-left"></div>
 						<div class="overlay-element top-right"></div>
@@ -73,19 +81,19 @@
 						<div class="overlay-element bottom-right"></div>
 					</div>
 				</div>-->
-				<img alt="" style="height:100%; flex-shrink: 0;">
-			</div>
-		</div>
-		<div class="row">
-			<div class="twelve columns" style="height: 60vh">
-				<textarea id="text"
-					style="resize: none; width: 100%; height: 100%; white-space: pre; overflow-wrap: normal; overflow-x: scroll"></textarea>
-			</div>
-		</div>
-	</div>
-	</div>
+        <img alt="" style="height:100%; flex-shrink: 0;">
+      </div>
+    </div>
+    <div class="row">
+      <div class="twelve columns" style="height: 60vh">
+        <textarea id="text"
+          style="resize: none; width: 100%; height: 100%; white-space: pre; overflow-wrap: normal; overflow-x: scroll"></textarea>
+      </div>
+    </div>
+  </div>
+  </div>
 
-	<!-- End Document
+  <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 </body>
 
