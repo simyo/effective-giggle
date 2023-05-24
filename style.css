@@ -4,8 +4,8 @@ textarea {
 
 .overlay {
   --border-style: 3px solid red;
-  --border-space-h: 400px;
-  --border-space-v: 200px;
+  --border-space-h: 150px;
+  --border-space-v: 150px;
 
   position: absolute;
   /* same size as the image */
