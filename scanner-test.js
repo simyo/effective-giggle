@@ -98,7 +98,7 @@ const Scheduler = () => {
         cutWidth,
         cutHeight,
       })
-      img.src = canvas.toDataURL()
+      //img.src = canvas.toDataURL()
       try {
         const result = log(JSON.stringify(reader.decodeFromCanvas(canvas)))
       } catch (e) {
