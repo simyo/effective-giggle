@@ -1,7 +1,6 @@
 // scanner-test.js
 import { Scanner } from './scanner.js'
 import 'webrtc-adapter';
-
 const marker = document.querySelector('.overlay .bottom-right')
 const img = document.querySelector('img');
 const text = document.querySelector('#text')
@@ -22,12 +21,16 @@ const log = txt => {
   text.scrollTop = text.scrollHeight;
 }
 log(`buildtime: ${window.buildtime}`)
+try {
 
 const scanner = Scanner({
 
 })
-await scanner.getDevices()
+log('getting devices')
+const devices = await scanner.getDevices()
+log('getting caps')
 const caps = await scanner.getEnvironmentDeviceCapabilities()
+log('getting stream')
 const stream = await scanner.stream({
   videoElem: video,
   deviceId: caps.deviceId,
@@ -37,15 +40,16 @@ const stream = await scanner.stream({
     frameRate: { ideal: 10, },
   }
 })
+log('devices: ' + devices.length)
 const track = stream.getTracks()[0]
 const lerp = (min, max, val) => {
   return min * (1 - val) + max * val
 }
-console.log(video.clientWidth, video.clientHeight)
+log('videosize: ' + video.clientWidth  + ', ' + video.clientHeight)
 let min = Math.max(video.clientWidth * .1, video.clientHeight * .1, 50)
 let max = Math.min(video.clientWidth * .9, video.clientHeight * .9, 500)
 const setSize = (x, y) => {
-  console.log('setSize', x, y)
+  log('setSize: ' +  x + ', ' + y)
   overlay.style.setProperty('--border-space-h', `${x}px`)
   overlay.style.setProperty('--border-space-v', `${y}px`)
 }
@@ -61,6 +65,7 @@ slider.addEventListener('change', e => {
   const lerpVal = lerp(min, max, newMult)
   setSize(lerpVal, lerpVal)
 })
+log('video done')
 
 
 
@@ -71,7 +76,7 @@ hints.set(ZXing.DecodeHintType.POSSIBLE_FORMATS, formats)
 hints.set(ZXing.DecodeHintType.TRY_HARDER, true)
 
 let reader = new ZXingBrowser.BrowserMultiFormatReader(hints)
-
+log('defining scheduler')
 const Scheduler = () => {
   let handle = null
   const toggle = () => {
@@ -103,9 +108,13 @@ const Scheduler = () => {
   }
   return { toggle }
 }
-
+log('running scheduler')
 const scheduler = Scheduler()
 scheduler.toggle()
+log('done')
 /*btn.addEventListener('click', scheduler.toggle)
 video.addEventListener('click', scheduler.toggle)
 img.addEventListener('click', scheduler.toggle)*/
+}catch(e) {
+  log('err: ' + e)
+}
