@@ -89,9 +89,8 @@ const fn = async () => {
             const consts = {
                 audio: false,
                 video: {
-                    width: { ideal: width },
-                    height: { ideal: height },
-                    height: { ideal: height },
+                    width: { ideal: width, max: 1024 },
+                    height: { ideal: height, max: 1024 },
                     frameRate: { ideal: 5 },
                     deviceId: { exact: deviceId },
                 }
