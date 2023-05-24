@@ -34,7 +34,7 @@
 	<script defer type="text/javascript">
 		document.getElementById('build.js').src = 'build.js?v=' + Date.now();
 		document.getElementById('main.js').src = 'main.js?v=' + Date.now();
-		</script>
+	</script>
 
 </head>
 
@@ -53,9 +53,9 @@
 		<div class="row" style="display: flex; justify-content: center;">
 			<div class="videobox" class="twelve columns"
 				style="height: 30vh; max-width:100%; display: flex; justify-content: center; display: inline-block; position:relative;">
-				<div class="overlay">
-					<div class="overlay-element top-left"></div>
-					<div class="overlay-element top-right"></div>
+				<div class="overlay" style="z-index:10">
+					<div class="overlay-element top-left" style="z-index:10"></div>
+					<div class="overlay-element top-right" style="z-index:-10"></div>
 					<div class="overlay-element bottom-left"></div>
 					<div class="overlay-element bottom-right"></div>
 				</div>
