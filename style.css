@@ -1,3 +1,57 @@
 textarea {
-  font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;
+  font-family: Consolas, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
+}
+
+.overlay {
+  --border-style: 3px solid red;
+  --border-space-h: 400px;
+  --border-space-v: 200px;
+
+  position: absolute;
+  /* same size as the image */
+  top: 50%;
+  left: 50%;
+}
+
+.overlay-helper {
+  position: relative;
+  width: 100%;
+  /* make this element same size as the wrapper */
+  height: 100%;
+}
+
+.overlay-element {
+  position: absolute;
+  width: 50px;
+  /* controls the length of the borders */
+  height: 50px;
+  /* controls the height of the borders */
+}
+
+.overlay .top-left {
+  border-left: var(--border-style);
+  border-top: var(--border-style);
+  top: calc(-.5 * var(--border-space-v));
+  left: calc(-.5 * var(--border-space-h));
+}
+
+.overlay .top-right {
+  border-right: var(--border-style);
+  border-top: var(--border-style);
+  top: calc(-.5 * var(--border-space-v));
+  right: calc(-.5 * var(--border-space-h));
+}
+
+.overlay .bottom-left {
+  border-left: var(--border-style);
+  border-bottom: var(--border-style);
+  bottom: calc(-.5 * var(--border-space-v));
+  left: calc(-.5 * var(--border-space-h));
+}
+
+.overlay .bottom-right {
+  border-right: var(--border-style);
+  border-bottom: var(--border-style);
+  bottom: calc(-.5 * var(--border-space-v));
+  right: calc(-.5 * var(--border-space-h));
 }

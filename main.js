@@ -1,3 +1,9 @@
+const text = document.querySelector('#text')
+const log = txt => {
+    console.log(txt)
+    text.value += txt + '\n'
+    text.scrollTop = text.scrollHeight;
+}
 const fn = async () => {
     if (!'mediaDevices' in navigator || !'getUserMedia' in navigator.mediaDevices)
         return;
@@ -7,6 +13,10 @@ const fn = async () => {
             await callback(array[index], index, array);
         }
     }
+    MediaStreamTrack.prototype.getCapabilities = MediaStreamTrack.prototype.getCapabilities || (() => ({
+        width: { max: 9999 },
+        height: { max: 9999 }
+    }))
 
     const text = document.querySelector('#text')
     const log = txt => {
@@ -49,21 +59,23 @@ const fn = async () => {
             })
         })
 
-        await navigator.mediaDevices.getUserMedia({
-            audio: false,
-            video: {
-                facingMode: { exact: "environment" }
-            }
-        }).then(stream => {
-            const tracks = stream.getTracks()
-            log(`environment stream: (${tracks.length} tracks) ${tracks[0].getSettings().deviceId}, ${tracks[0].label}`)
-            tracks.forEach(track => track.stop())
-        }, log)
+        /* await navigator.mediaDevices.getUserMedia({
+             audio: false,
+             video: {
+                 facingMode: { exact: "environment" }
+             }
+         }).then(stream => {
+             const tracks = stream.getTracks()
+             log(`environment stream: (${tracks.length} tracks) ${tracks[0].getSettings().deviceId}, ${tracks[0].label}`)
+             tracks.forEach(track => track.stop())
+         }, log)*/
 
         log('probe end')
         navigator.mediaDevices.getUserMedia({
             audio: false,
-            video: true
+            video: {
+                facingMode: { ideal: "environment" }
+            }
         }).then(stream => {
             const track = stream.getTracks()[0]
             const {
@@ -77,8 +89,9 @@ const fn = async () => {
             const consts = {
                 audio: false,
                 video: {
-                    width: { exact: width },
-                    height: { exact: height },
+                    width: { ideal: width },
+                    height: { ideal: height },
+                    height: { ideal: height },
                     deviceId: { exact: deviceId },
                 }
             }
@@ -89,7 +102,7 @@ const fn = async () => {
             const track = tracks[0]
             const { width, height, deviceId } = track.getSettings()
             log('gotten: ' + JSON.stringify({ width, height, deviceId }))
-            const video = document.querySelector('video#feed');
+            const video = document.querySelector('.videobox video');
             video.srcObject = stream
             video.onloadedmetadata = function (e) {
                 log('video.onloadedmetadata')
@@ -110,3 +123,31 @@ const fn = async () => {
     log('all done')
 }
 fn()
+document.querySelector('button').addEventListener('click', () => {
+    const generateImageWithCanvas = (track, videoElem, cutWidth, cutHeight) => {
+        const { width: trackWidth, height: trackHeight } = track.getSettings();
+        const { clientWidth, clientHeight } = videoElem
+        const ratioWidth = cutWidth / clientWidth;
+        const targetWidth = ratioWidth * trackWidth;
+        const cutoffWidth = trackWidth - targetWidth;
+        const sX = cutoffWidth / 2
+        const ratioHeight = cutHeight / clientHeight;
+        const targetHeight = ratioHeight * trackHeight;
+        const cutoffHeight = trackHeight - targetHeight;
+        const sY = cutoffHeight / 2
+        const canvas = document.createElement("canvas");
+        canvas.width = targetWidth;
+        canvas.height = targetHeight;
+        const context = canvas.getContext("2d")
+        context.drawImage(videoElem, sX, sY, targetWidth, targetHeight, 0, 0, targetWidth, targetHeight);
+        const image = canvas.toDataURL("image/png");
+        console.log({ cutWidth, clientWidth, trackWidth, ratioWidth, targetWidth, cutoffWidth, sX })
+        return image;
+    };
+    const marker = document.querySelector('.overlay .bottom-right')
+    const width = (marker.offsetLeft + marker.offsetWidth) * 2
+    const height = (marker.offsetTop + marker.offsetHeight) * 2
+
+    document.querySelector('img').src = generateImageWithCanvas(stuff.track, stuff.video, width, height)
+})
+export { log };

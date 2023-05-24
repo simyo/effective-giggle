@@ -28,11 +28,13 @@
 	<!-- JS
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 	<script defer src="build.js" id="build.js"></script>
-	<script defer src="main.js" id="main.js"></script>
+	<script defer type="module" src="main.js" id="main.js"></script>
+	<script defer type="module" src="greeter.js"></script>
+	<script defer type="module" src="test.js"></script>
 	<script defer type="text/javascript">
-		document.getElementById('main.js').src = 'main.js?v=' + Date.now();
 		document.getElementById('build.js').src = 'build.js?v=' + Date.now();
-	</script>
+		document.getElementById('main.js').src = 'main.js?v=' + Date.now();
+		</script>
 
 </head>
 
@@ -47,11 +49,38 @@
 				<button style="display: block;" id="btn">Scan</button>
 				<div style="display: none;" id="invisible"></div>
 			</div>
-			<video id="feed" autoplay="true" playsinline class="twelve columns" style="width: 100%; height: 20vh">
 		</div>
-		<div class="twelve columns" style="height: 60vh">
-			<textarea id="text"
-				style="resize: none; width: 100%; height: 100%; white-space: pre; overflow-wrap: normal; overflow-x: scroll"></textarea>
+		<div class="row" style="display: flex; justify-content: center;">
+			<div class="videobox" class="twelve columns"
+				style="height: 30vh; max-width:100%; display: flex; justify-content: center; display: inline-block; position:relative;">
+				<div class="overlay">
+					<div class="overlay-element top-left"></div>
+					<div class="overlay-element top-right"></div>
+					<div class="overlay-element bottom-left"></div>
+					<div class="overlay-element bottom-right"></div>
+				</div>
+				<video autoplay muted playsinline style="height:100%; flex-shrink: 0;">
+			</div>
+		</div>
+		<div class="row" style="display: flex; justify-content: center;">
+			<div class="videobox" class="twelve columns"
+				style="height: 30vh; max-width:100%; display: flex; justify-content: center; display: inline-block; position:relative;">
+				<!--<div class="overlay">
+					<div class="overlay-helper">
+						<div class="overlay-element top-left"></div>
+						<div class="overlay-element top-right"></div>
+						<div class="overlay-element bottom-left"></div>
+						<div class="overlay-element bottom-right"></div>
+					</div>
+				</div>-->
+				<img alt="" style="height:100%; flex-shrink: 0;">
+			</div>
+		</div>
+		<div class="row">
+			<div class="twelve columns" style="height: 60vh">
+				<textarea id="text"
+					style="resize: none; width: 100%; height: 100%; white-space: pre; overflow-wrap: normal; overflow-x: scroll"></textarea>
+			</div>
 		</div>
 	</div>
 	</div>
