@@ -92,6 +92,7 @@ const fn = async () => {
                     width: { ideal: width },
                     height: { ideal: height },
                     height: { ideal: height },
+                    frameRate: { ideal: 5 },
                     deviceId: { exact: deviceId },
                 }
             }
