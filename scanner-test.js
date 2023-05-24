@@ -2,13 +2,6 @@
 import { Scanner } from './scanner.js'
 import 'webrtc-adapter';
 
-const allEvents = el => {
-  console.log('adding allEvents', el)
-  for (const key in el) {
-    if (/^on/.test(key))
-      el.addEventListener(key.slice(2), console.log);
-  }
-}
 const marker = document.querySelector('.overlay .bottom-right')
 const img = document.querySelector('img');
 const text = document.querySelector('#text')
@@ -20,6 +13,7 @@ const log = txt => {
   text.value += txt + '\n'
   text.scrollTop = text.scrollHeight;
 }
+log(`buildtime: ${window.buildtime}`)
 
 const scanner = Scanner({
 
@@ -75,15 +69,6 @@ const Scheduler = () => {
       const randomMultY = (Math.random() * .1) + .95
       const cutWidth = Math.min(video.clientWidth, randomMultX * width)
       const cutHeight = Math.min(video.clientHeight, randomMultY * height)
-      /*log({
-        msg: 'interval',
-        width,
-        height,
-        randomMultX,
-        randomMultY,
-      cutWidth,
-      cutHeight,
-    })*/
       const canvas = window.canvas = scanner.generateCanvasFromVideo({
         track,
         videoElem: video,
