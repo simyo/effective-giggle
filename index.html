@@ -46,7 +46,7 @@
 
 </head>
 
-<body style="display: flex; flex-direction: column; min-height: 100vh; overflow: hidden;">
+<body style="display: flex; flex-direction: column; min-height: 100vh; min-height: -webkit-fill-available !important;">
 
   <!-- Primary Page Layout
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -58,7 +58,7 @@
         <div style="display: none;" id="invisible"></div>
       </div>
     </div>
-    <div class="row" style="display: flex; justify-content: center; flex-grow: 1">
+    <div class="row" style="display: flex; justify-content: center; flex-grow: 1;">
       <div class="videobox" class="twelve columns"
         style="height: 100%; max-width:100%; display: flex; justify-content: center; display: inline-block; position:relative;">
         <div class="overlay" style="z-index:10">
@@ -71,9 +71,16 @@
       </div>
     </div>
     <div class="row" style="display: flex; justify-content: center;">
-      <div class="videobox" class="twelve columns"
-        style="height: 0vh; max-width:100%; display: flex; justify-content: center; display: inline-block; position:relative;">
+      <div class="twelve columns" style="max-width:100%; display: flex; justify-content: center;">
         <img alt="" style="height:100%; flex-shrink: 0;">
+      </div>
+    </div>
+    <div class="row" style="display: flex; justify-content: center;">
+      <div class="twelve columns" style="max-width:100%; display: flex; justify-content: center;">
+        <div>
+          <label><input type="range" name="scan-size" min="0" max="100" value="30" step="1">Scan
+            Größe</label>
+        </div>
       </div>
     </div>
     <div class="row">
