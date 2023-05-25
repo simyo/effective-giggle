@@ -1,10 +1,12 @@
 // scanner-test.js
 import { Scanner } from './scanner.js'
-import 'webrtc-adapter';
+import 'https://unpkg.com/@zxing/browser@0.1.3/umd/zxing-browser.min.js'
+import 'https://webrtc.github.io/adapter/adapter-latest.js';
 const marker = document.querySelector('.overlay .bottom-right')
 const img = document.querySelector('img');
 const text = document.querySelector('#text')
 const video = document.querySelector('video')
+const wait = async ms => new Promise(resolve => setTimeout(resolve, ms))
 const allEvents = el => {
   console.log('adding allEvents', el)
   for (const key in el) {
@@ -45,7 +47,7 @@ try {
   const lerp = (min, max, val) => {
     return min * (1 - val) + max * val
   }
-  let clientHeight = () => video.clientWidth / video.videoWidth * video.videoHeight
+  let clientHeight = () => video.clientWidth / (video.videoWidth||1) * (video.videoHeight||1)
   log('videosize: ' + video.clientWidth + ', ' + clientHeight())
   const setSize = (x, y) => {
     log('setSize: ' + x + ', ' + y)
@@ -54,7 +56,7 @@ try {
   }
   let min = () => Math.max(video.clientWidth * .1, clientHeight() * .1, 50)
   let max = () => Math.min(video.clientWidth * .9, clientHeight() * .9, 500)
-  
+
   video.addEventListener('resize', () => {
     setSize(lerp(min(), max(), getSliderMult(slider)), lerp(min(), max(), getSliderMult(slider)))
   })
@@ -70,10 +72,10 @@ try {
 
 
   const hints = new Map()
-  const formats = [ZXing.BarcodeFormat.DATA_MATRIX, ZXing.BarcodeFormat.CODE_128]
+  const formats = [ZXingBrowser.BarcodeFormat.DATA_MATRIX, ZXingBrowser.BarcodeFormat.CODE_128]
 
-  hints.set(ZXing.DecodeHintType.POSSIBLE_FORMATS, formats)
-  hints.set(ZXing.DecodeHintType.TRY_HARDER, true)
+  hints.set(2 /*ZXing.DecodeHintType.POSSIBLE_FORMATS*/, formats)
+  hints.set(3 /*ZXingBrowser.DecodeHintType.TRY_HARDER*/, true)
 
   let reader = new ZXingBrowser.BrowserMultiFormatReader(hints)
   log('defining scheduler')
@@ -86,24 +88,29 @@ try {
         return
       }
       handle = setInterval(() => {
+        const ts0 = Date.now()
         const width = (marker.offsetLeft + marker.offsetWidth) * 2
         const height = (marker.offsetTop + marker.offsetHeight) * 2
         const randomMultX = (Math.random() * .1) + .95
         const randomMultY = (Math.random() * .1) + .95
         const cutWidth = Math.min(video.clientWidth, randomMultX * width)
         const cutHeight = Math.min(clientHeight(), randomMultY * height)
+        const ts1 = Date.now()
         const canvas = window.canvas = scanner.generateCanvasFromVideo({
           track,
           videoElem: video,
           cutWidth,
           cutHeight,
         })
+        const ts2 = Date.now()
         //img.src = canvas.toDataURL()
         try {
           const result = log('SCAN ERFOLGREICH: ' + Date.now() + ', ' + JSON.stringify(reader.decodeFromCanvas(canvas)))
         } catch (e) {
           ;
         }
+        const ts3 = Date.now()
+        // console.log(`full: ${ts3-ts0}ms, calc: ${ts1-ts0}, canvas: ${ts2-ts1}, scan: ${ts3-ts1}`)
       }, 333)
     }
     return { toggle }
