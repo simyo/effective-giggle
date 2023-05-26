@@ -4,57 +4,55 @@
     const Scanner = module.Scanner
     window.Scanner = Scanner
   })
-})().then(() => {
-
-
-
-const img = document.querySelector('img');
-const text = document.querySelector('#text')
-const wait = async ms => new Promise(resolve => setTimeout(resolve, ms))
-const allEvents = el => {
-  console.log('adding allEvents', el)
-  for (const key in el) {
-    if (/^on/.test(key))
-      el.addEventListener(key.slice(2), console.log);
+})().then(async () => {
+  const img = document.querySelector('img');
+  const text = document.querySelector('#text')
+  const wait = async ms => new Promise(resolve => setTimeout(resolve, ms))
+  const allEvents = el => {
+    console.log('adding allEvents', el)
+    for (const key in el) {
+      if (/^on/.test(key))
+        el.addEventListener(key.slice(2), console.log);
+    }
   }
-}
-const btn = document.querySelector('button')
-const slider = document.querySelector('input[type=range][name=scan-size]')
-const log = txt => {
-  console.warn(txt)
-  text.value += txt + '\n'
-  text.scrollTop = text.scrollHeight;
-}
-log(`buildtime: ${window.buildtime}`)
+  const btn = document.querySelector('button')
+  const slider = document.querySelector('input[type=range][name=scan-size]')
+  const log = txt => {
+    console.warn(txt)
+    text.value += txt + '\n'
+    debugger
+    text.scrollTop = text.scrollHeight - text.clientHeight;
+  }
+  log(`buildtime: ${window.buildtime}`)
 
 
-  const scanner = window.scanner = Scanner({
+  let scanner = window.scanner = Scanner({
 
   })
   const objs = window.objs = scanner.createVideoBox({ container: document.querySelector('#video-box-container') })
   const { overlay, video, marker, container, box } = objs
-  scanner.streamBest({ videoElem: video, container: box })
-    .then(stream => {
-      window.stream = stream
-      const track = stream.getTracks()[0]
-      scanner.setScanSize({ boxInfo: objs, x: .5, y: .5 })
-      const scheduler = scanner.Scheduler({ boxInfo: objs, stream })
-      scheduler.onScan(result => {
-        scheduler.toggle()
-        track.stop()
-        console.log(result)
-      })
-      scheduler.toggle()
-    })
+  let stream = await scanner.streamBest({ videoElem: video, container: box })
+  let track = stream.getTracks()[0]
+  scanner.setScanSize({ boxInfo: objs, x: .5, y: .5 })
+  let scheduler = scanner.Scheduler({ boxInfo: objs, stream })
+  scheduler.onScan(result => {
+    scheduler.toggle()
+    track.stop()
+    log(result)
+  })
+  scheduler.toggle()
+  slider.addEventListener('change', () => {
+    scanner.setScanSize({ boxInfo: objs, x: slider.value / 100, y: slider.value / 100 })
+  })
   btn.addEventListener('click', async () => {
-    const stream = window.stream = await scanner.streamBest({ videoElem: video, container: box })
-    const track = stream.getTracks()[0]
+    stream = window.stream = await scanner.streamBest({ videoElem: video, container: box })
+    track = stream.getTracks()[0]
     scanner.setScanSize({ boxInfo: objs, x: .5, y: .5 })
-    const scheduler = scanner.Scheduler({ boxInfo: objs, stream })
+    scheduler = scanner.Scheduler({ boxInfo: objs, stream })
     scheduler.onScan(result => {
       scheduler.toggle()
       track.stop()
-      console.log(result)
+      log(result)
     })
     scheduler.toggle()
   })
