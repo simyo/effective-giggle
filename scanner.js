@@ -95,7 +95,7 @@ export const Scanner = function ({
       deviceId: { ideal: envDevicesCaps.deviceId },
       width: { max: 1024 },
       height: { max: 1024 },
-      aspectRatio: { ideal: aspectRatio },
+      // aspectRatio: { ideal: aspectRatio },
       frameRate: { ideal: 10, },
     }
     const stream = await navigator.mediaDevices.getUserMedia({ video: videoConstraints })
