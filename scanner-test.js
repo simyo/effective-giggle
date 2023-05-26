@@ -20,7 +20,6 @@
   const log = txt => {
     console.warn(txt)
     text.value += txt + '\n'
-    debugger
     text.scrollTop = text.scrollHeight - text.clientHeight;
   }
   log(`buildtime: ${window.buildtime}`)

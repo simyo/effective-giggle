@@ -249,9 +249,9 @@ export const Scanner = function ({
         })
         const ts2 = Date.now()
         //img.src = canvas.toDataURL()
-        try { 
+        try {
           const result = boxInfo.reader.decodeFromCanvas(canvas)
-          if (typeof(callback) === 'function' && handle != null)
+          if (typeof (callback) === 'function' && handle != null)
             callback(result)
           log('SCAN ERFOLGREICH: ' + Date.now() + ', ' + JSON.stringify())
         } catch (e) {
