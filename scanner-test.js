@@ -1,11 +1,15 @@
 // scanner-test.js
-import { Scanner } from './scanner.js'
-import 'https://unpkg.com/@zxing/browser@0.1.3/umd/zxing-browser.min.js'
-import 'https://webrtc.github.io/adapter/adapter-latest.js';
-const marker = document.querySelector('.overlay .bottom-right')
+(async () => {
+  await import("./scanner.js").then(module => {
+    const Scanner = module.Scanner
+    window.Scanner = Scanner
+  })
+})().then(() => {
+
+
+
 const img = document.querySelector('img');
 const text = document.querySelector('#text')
-const video = document.querySelector('video')
 const wait = async ms => new Promise(resolve => setTimeout(resolve, ms))
 const allEvents = el => {
   console.log('adding allEvents', el)
@@ -16,18 +20,46 @@ const allEvents = el => {
 }
 const btn = document.querySelector('button')
 const slider = document.querySelector('input[type=range][name=scan-size]')
-const overlay = document.querySelector('.overlay')
 const log = txt => {
-  console.log(txt)
+  console.warn(txt)
   text.value += txt + '\n'
   text.scrollTop = text.scrollHeight;
 }
 log(`buildtime: ${window.buildtime}`)
-try {
 
-  const scanner = Scanner({
+
+  const scanner = window.scanner = Scanner({
 
   })
+  const objs = window.objs = scanner.createVideoBox({ container: document.querySelector('#video-box-container') })
+  const { overlay, video, marker, container, box } = objs
+  scanner.streamBest({ videoElem: video, container: box })
+    .then(stream => {
+      window.stream = stream
+      const track = stream.getTracks()[0]
+      scanner.setScanSize({ boxInfo: objs, x: .5, y: .5 })
+      const scheduler = scanner.Scheduler({ boxInfo: objs, stream })
+      scheduler.onScan(result => {
+        scheduler.toggle()
+        track.stop()
+        console.log(result)
+      })
+      scheduler.toggle()
+    })
+  btn.addEventListener('click', async () => {
+    const stream = window.stream = await scanner.streamBest({ videoElem: video, container: box })
+    const track = stream.getTracks()[0]
+    scanner.setScanSize({ boxInfo: objs, x: .5, y: .5 })
+    const scheduler = scanner.Scheduler({ boxInfo: objs, stream })
+    scheduler.onScan(result => {
+      scheduler.toggle()
+      track.stop()
+      console.log(result)
+    })
+    scheduler.toggle()
+  })
+}).catch(e => console.error)
+  /*
   log('getting devices')
   const devices = await scanner.getDevices()
   log('getting caps')
@@ -43,7 +75,7 @@ try {
     }
   })
   log('devices: ' + devices.length)
-  const track = stream.getTracks()[0]
+  
   const lerp = (min, max, val) => {
     return min * (1 - val) + max * val
   }
@@ -56,7 +88,7 @@ try {
   }
   let min = () => Math.max(video.clientWidth * .1, clientHeight() * .1, 50)
   let max = () => Math.min(video.clientWidth * .9, clientHeight() * .9, 500)
-
+ 
   video.addEventListener('resize', () => {
     setSize(lerp(min(), max(), getSliderMult(slider)), lerp(min(), max(), getSliderMult(slider)))
   })
@@ -68,16 +100,10 @@ try {
     setSize(lerpVal, lerpVal)
   })
   log('video done')
-
-
-
-  const hints = new Map()
-  const formats = [ZXingBrowser.BarcodeFormat.DATA_MATRIX, ZXingBrowser.BarcodeFormat.CODE_128]
-
-  hints.set(2 /*ZXing.DecodeHintType.POSSIBLE_FORMATS*/, formats)
-  hints.set(3 /*ZXingBrowser.DecodeHintType.TRY_HARDER*/, true)
-
-  let reader = new ZXingBrowser.BrowserMultiFormatReader(hints)
+ 
+ 
+ 
+  
   log('defining scheduler')
   const Scheduler = () => {
     let handle = null
@@ -94,7 +120,7 @@ try {
         const randomMultX = (Math.random() * .1) + .95
         const randomMultY = (Math.random() * .1) + .95
         const cutWidth = Math.min(video.clientWidth, randomMultX * width)
-        const cutHeight = Math.min(clientHeight(), randomMultY * height)
+        const cutHeight = Math.min(scanner.getVideoSize({ video }).height, randomMultY * height)
         const ts1 = Date.now()
         const canvas = window.canvas = scanner.generateCanvasFromVideo({
           track,
@@ -119,9 +145,10 @@ try {
   const scheduler = Scheduler()
   scheduler.toggle()
   log('done')
-  /*btn.addEventListener('click', scheduler.toggle)
-  video.addEventListener('click', scheduler.toggle)
-  img.addEventListener('click', scheduler.toggle)*/
-} catch (e) {
-  log('err: ' + e)
-}
+  //btn.addEventListener('click', scheduler.toggle)
+  //video.addEventListener('click', scheduler.toggle)
+  //img.addEventListener('click', scheduler.toggle)
+  //*/
+//} catch (e) {
+  //log('err: ' + e)
+//}

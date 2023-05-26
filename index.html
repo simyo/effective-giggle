@@ -39,7 +39,8 @@
   <!--<script async type="module" src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
   <script async type="module" src="https://unpkg.com/@zxing/library@0.20.0/umd/index.min.js"></script>
   <script async type="module" src="https://unpkg.com/@zxing/browser@0.1.3"></script>
-  --><script defer async type="module" src="scanner-test.js"></script>
+  -->
+  <script defer async src="scanner-test.js"></script>
   <!--<script defer type="module" src="greeter.js"></script>
   <script defer type="module" src="test.js"></script>
   -->
@@ -57,22 +58,19 @@
         <div style="display: none;" id="invisible"></div>
       </div>
     </div>
-    <div class="row" style="display: flex; justify-content: center; height:40vh;">
-      <div class="videobox" class="twelve columns"
-        style="height: 100%; max-width:100%; display: flex; justify-content: center; display: inline-block; position:relative;">
-        <div class="overlay" style="z-index:10">
-          <div class="overlay-element top-left" style="z-index:10"></div>
-          <div class="overlay-element top-right" style="z-index:-10"></div>
-          <div class="overlay-element bottom-left"></div>
-          <div class="overlay-element bottom-right"></div>
+    <div class="row" id="video-box-container" style="height:40vh;">
+      <!--<div class="scanner-outer-box" style="width: 100%; height: 100%; display: flex; justify-content: center">
+        <div class="scanner-videobox" class="twelve columns"
+          style="height: 100%; max-width:100%; display: grid; justify-content: center; align-content: center; position:relative;">
+          <div class="overlay scanner-overlay" style="z-index:10">
+            <div class="scanner-overlay-element overlay-element top-left" style="z-index:10"></div>
+            <div class="scanner-overlay-element overlay-element top-right" style="z-index:-10"></div>
+            <div class="scanner-overlay-element overlay-element bottom-left"></div>
+            <div class="scanner-overlay-element overlay-element bottom-right"></div>
+          </div>
+          <video autoplay muted playsinline style="max-width: 100%; max-height:100%">
         </div>
-        <video autoplay muted playsinline style="max-width: 100%; height:100%">
-      </div>
-    </div>
-    <div class="row" style="display: flex; justify-content: center; height:0vh;">
-      <div class="twelve columns" style="max-width:100%; display: flex; justify-content: center;">
-        <img alt="" style="height:100%; max-width: 100%; flex-shrink: 0;">
-      </div>
+      </div>-->
     </div>
     <div class="row" style="display: flex; justify-content: center;">
       <div class="twelve columns" style="max-width:100%; display: flex; justify-content: center;">
@@ -86,6 +84,11 @@
       <div class="twelve columns" style="height: 10vh">
         <textarea id="text"
           style="resize: none; width: 100%; height: 100%; white-space: pre; overflow-wrap: normal; overflow-x: scroll"></textarea>
+      </div>
+    </div>
+    <div class="row" style="display: flex; justify-content: center; ">
+      <div class="twelve columns" style="max-width:100%; display: flex; justify-content: center;">
+        <img alt="" style="height:100%; max-width: 100%; flex-shrink: 0;">
       </div>
     </div>
   </div>
