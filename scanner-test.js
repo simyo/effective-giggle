@@ -30,8 +30,15 @@
   })
   const objs = window.objs = scanner.createVideoBox({ container: document.querySelector('#video-box-container') })
   const { overlay, video, marker, container, box } = objs
-  let stream = await scanner.streamBest({ videoElem: video, container: box })
-  let track = stream.getTracks()[0]
+  let stream = window.stream = await scanner.streamBest({ videoElem: video, container: box })
+  let track = window.track = stream.getTracks()[0]
+  let toString = o => Object.keys(o).map(key => `${key}: ${JSON.stringify(o[key])}`)
+  log('Capabilities: ')
+  log(toString(track.getCapabilities()).map(s => ' -- ' + s).join('\n'))
+  log('Settings: ')
+  log(toString(track.getSettings()).map(s => ' -- ' + s).join('\n'))
+  log('Constraints: ')
+  log(toString(track.getConstraints()).map(s => ' -- ' + s).join('\n'))
   scanner.setScanSize({ boxInfo: objs, x: .5, y: .5 })
   let scheduler = scanner.Scheduler({ boxInfo: objs, stream })
   scheduler.onScan(result => {
