@@ -137,16 +137,16 @@ export const Scanner = function ({
    * dom specific stuff
    ****************/
   const template = `
-  <div class="scanner-outer-box" style="width: 100%; height: 100%; display: flex; justify-content: center">
+<div class="scanner-outer-box" style="width: 100%; height: 100%; display: flex; justify-content: center; border: 2px solid chartreuse">
   <div class="scanner-videobox" class="twelve columns"
-    style="height: 100%; max-width: 100%; display: inline-block; position: relative; display: flex;">
+    style="height: 100%; max-width: 100%; display: inline-block; position: relative; display: flex; border: 2px solid orange;">
     <div class="overlay scanner-overlay" style="z-index:10; --border-style: 3px solid red; --border-space-h: 150px; --border-space-v: 150px; position: absolute; top: 50%; left: 50%;">
       <div class="scanner-overlay-element overlay-element top-left" style="position: absolute; width: 50px; height: 50px; border-left: var(--border-style); border-top: var(--border-style); top: calc(-.5 * var(--border-space-v)); left: calc(-.5 * var(--border-space-h));"></div>
       <div class="scanner-overlay-element overlay-element top-right" style="position: absolute; width: 50px; height: 50px; border-right: var(--border-style); border-top: var(--border-style); top: calc(-.5 * var(--border-space-v)); right: calc(-.5 * var(--border-space-h));"></div>
       <div class="scanner-overlay-element overlay-element bottom-left" style="position: absolute; width: 50px; height: 50px; border-left: var(--border-style); border-bottom: var(--border-style); bottom: calc(-.5 * var(--border-space-v)); left: calc(-.5 * var(--border-space-h));"></div>
       <div class="scanner-overlay-element overlay-element bottom-right" style="position: absolute; width: 50px; height: 50px; border-right: var(--border-style); border-bottom: var(--border-style); bottom: calc(-.5 * var(--border-space-v)); right: calc(-.5 * var(--border-space-h));"></div>
     </div>
-    <video autoplay muted playsinline style="max-width: 100%; max-height: 100%; display: block;">
+    <video autoplay muted playsinline style="max-width: 100%; max-height: 100%; display: block; border: 2px solid blue;">
   </div>
 </div>
 `
